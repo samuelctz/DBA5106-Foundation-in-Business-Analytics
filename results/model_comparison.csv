@@ -1,0 +1,5 @@
+model,type,training_loss,best_params,train_auc,valid_auc,test_auc,ece_valid_raw,ece_test_raw,ece_test_platt,platt_applied
+LASSO (L2 loss),glassbox,L2,"{""alpha"": 0.0001}",0.8171,0.8409,0.8504,0.0453,0.0499,0.0168,True
+LASSO logistic (deviance),glassbox,binomial deviance,"{""C"": 0.3}",0.8199,0.8443,0.8521,0.0184,0.0269,0.0159,False
+Gradient boost (L2 loss),blackbox,L2,"{""learning_rate"": 0.15, ""max_leaf_nodes"": 31}",0.9222,0.9064,0.8953,0.0217,0.0182,0.0298,True
+Gradient boost (deviance),blackbox,binomial deviance,"{""learning_rate"": 0.15, ""max_leaf_nodes"": 31}",0.9213,0.9069,0.8958,0.015,0.0165,0.0152,False

@@ -20,34 +20,34 @@ Our team has chosen **Version 2: With Data**.
 ## Required Components
 
 ### 1. Problem framing and evaluation loss
-- [ ] Pick a **classification** problem with a clear real-world use.
-- [ ] Explain **how the predictions are used**. We can define our own setting.
-- [ ] Define a **customized evaluation loss** that **deviates from misclassification loss**, based on the context. For example, false negatives and false positives have different costs.
+- [x] Pick a **classification** problem with a clear real-world use.
+- [x] Explain **how the predictions are used**. We can define our own setting.
+- [x] Define a **customized evaluation loss** that **deviates from misclassification loss**, based on the context. For example, false negatives and false positives have different costs.
 
 ### 2. Models: interpretability vs. performance
-- [ ] Implement **at least one glassbox model**. Course options: LASSO logistic regression, shallow tree, EBM, FIGS.
-- [ ] Implement **at least one blackbox model**. Course options: random forest, extra trees, gradient boost.
+- [x] Implement **at least one glassbox model**. Course options: LASSO logistic regression, shallow tree, EBM, FIGS.
+- [x] Implement **at least one blackbox model**. Course options: random forest, extra trees, gradient boost.
 
 ### 3. Training losses: two versions per model
-- [ ] Train **each model in two versions**:
+- [x] Train **each model in two versions**:
   - **L2 loss**
   - **Another surrogate loss**, such as binomial deviance, hinge, or exponential
-- [ ] **Tune the hyperparameters separately** for each version.
+- [x] **Tune the hyperparameters separately** for each version.
 
 ### 4. Model selection
-- [ ] Compare **all** model versions using **validation AUC**, not training loss.
-- [ ] Make and justify a decision on the final model.
+- [x] Compare **all** model versions using **validation AUC**, not training loss.
+- [x] Make and justify a decision on the final model.
 
 ### 5. Threshold selection
-- [ ] For the chosen model, **select the classification threshold that minimizes the evaluation loss** from step 1.
+- [x] For the chosen model, **select the classification threshold that minimizes the evaluation loss** from step 1.
 
 ### 6. Calibration
-- [ ] Check whether the models are calibrated, using bin evaluation, a reliability diagram, and ECE.
-- [ ] If they are not calibrated, adjust the probability predictions, for example with Platt scaling.
+- [x] Check whether the models are calibrated, using bin evaluation, a reliability diagram, and ECE.
+- [x] If they are not calibrated, adjust the probability predictions, for example with Platt scaling.
 
 ### 7. Interpretability with SHAP
-- [ ] Apply **Tree SHAP to a tree-based blackbox model**. This is required **even if the final chosen model is glassbox**.
-- [ ] Show both **local SHAP** (an individual prediction) and **global SHAP** (overall feature effects).
+- [x] Apply **Tree SHAP to a tree-based blackbox model**. This is required **even if the final chosen model is glassbox**.
+- [x] Show both **local SHAP** (an individual prediction) and **global SHAP** (overall feature effects).
 
 ---
 
@@ -89,16 +89,37 @@ Our team has chosen **Version 2: With Data**.
 
 ---
 
-## Team Decisions (to fill in)
+## Team Decisions
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| Dataset | | |
-| Target / classes | | |
-| Decision context | | |
-| Evaluation loss (cost matrix) | | |
-| Glassbox model(s) | | |
-| Blackbox model(s) | | |
-| Surrogate loss(es) | | |
-| Final model | | |
-| Chosen threshold | | |
+| Dataset | HDB resale flat prices, Jan 2017 to Nov 2026 (data.gov.sg), `resaleprice.csv`. 239,015 rows used. | Singapore data, no missing values, no cleaning beyond parsing lease and storey. |
+| Target / classes | `premium` = 1 if the flat sold above the median price of comparable flats (same town, flat type and quarter), else 0. 49% positive. | Balanced by construction, robust to rising prices, and not near-perfectly predictable (a fixed price cutoff gave AUC 0.99). |
+| Decision context | A property agency scores each new listing; flagged listings get a senior agent and a paid marketing package. | States how the prediction drives a decision before the price is known. |
+| Evaluation loss (cost matrix) | FN = 5, FP = 1, correct = 0. Loss = (5·FN + 1·FP) / n. | A missed premium flat loses commission; a wrongly flagged flat only wastes marketing spend. The 5:1 ratio is our assumption. |
+| Glassbox model(s) | LASSO: L2 loss (α = 0.0001) and L1 logistic (C = 0.3). | Sparse, readable coefficients. |
+| Blackbox model(s) | Gradient boosting (`HistGradientBoosting`): L2 loss and deviance, both learning rate 0.15, 31 leaves. | Tree-based, so Tree SHAP applies. |
+| Surrogate loss(es) | Binomial deviance (log loss), alongside L2. | Tuned separately per version, 4 settings each, on validation AUC. |
+| Final model | Gradient boost with deviance loss. Validation AUC 0.907, test AUC 0.896. | Highest validation AUC and best-calibrated raw scores (validation ECE 0.015), so no Platt scaling applied. |
+| Chosen threshold | 0.16 (theory: 1/(1+5) = 0.167). | Minimises the evaluation loss on validation. Test cost per listing 0.361, against 0.600 at 0.5. |
+
+## Results at a glance
+
+| Model version | Type | Train AUC | Valid AUC | Test AUC | Test ECE raw | Test ECE after Platt |
+|---|---|---|---|---|---|---|
+| LASSO, L2 loss | Glassbox | 0.817 | 0.841 | 0.850 | 0.050 | 0.017 |
+| LASSO logistic, deviance | Glassbox | 0.820 | 0.844 | 0.852 | 0.027 | 0.016 |
+| Gradient boost, L2 loss | Blackbox | 0.922 | 0.906 | 0.895 | 0.018 | 0.030 |
+| Gradient boost, deviance (final) | Blackbox | 0.921 | 0.907 | 0.896 | 0.017 | 0.015 |
+
+Split by time: train 2017 to 2023, validation 2024, test 2025 to 2026.
+
+## Reproducing
+
+```
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python project2_analysis.py
+```
+
+The script takes about two minutes and writes the charts to `figures/` and the tables to `results/` (`summary.json` holds every number quoted above).

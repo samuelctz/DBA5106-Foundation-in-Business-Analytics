@@ -1,0 +1,49 @@
+,coefficient
+flat_type_EXECUTIVE,-4.8024
+flat_type_2 ROOM,4.4406
+flat_type_3 ROOM,4.2396
+flat_model_Terrace,3.7751
+floor_area_sqm,2.4184
+flat_type_5 ROOM,-2.3716
+flat_model_DBSS,2.2549
+town_PUNGGOL,-1.9132
+flat_model_Model A-Maisonette,1.7942
+flat_model_Type S2,-1.7224
+remaining_lease_yrs,1.6667
+town_MARINE PARADE,1.592
+flat_model_Type S1,-1.4446
+town_SENGKANG,-1.386
+town_GEYLANG,1.3207
+flat_model_Model A2,-0.9704
+storey_mid,0.813
+town_CHOA CHU KANG,-0.8083
+town_BUKIT PANJANG,-0.798
+flat_model_Maisonette,0.7649
+town_BEDOK,0.7392
+town_SEMBAWANG,-0.6842
+town_SERANGOON,0.6749
+town_TOA PAYOH,0.633
+flat_model_Model A,-0.6283
+town_QUEENSTOWN,-0.4892
+flat_model_Simplified,-0.4693
+town_WOODLANDS,-0.4502
+town_ANG MO KIO,0.4111
+town_PASIR RIS,-0.4057
+town_BISHAN,0.3712
+flat_model_infrequent_sklearn,0.3696
+flat_model_Premium Apartment,0.3559
+flat_type_4 ROOM,0.3019
+flat_model_Apartment,0.2883
+flat_model_Adjoined flat,-0.2495
+town_KALLANG/WHAMPOA,0.2382
+flat_model_New Generation,0.2056
+town_BUKIT MERAH,-0.1557
+flat_model_Standard,-0.1137
+town_CENTRAL AREA,0.113
+town_TAMPINES,0.1114
+town_JURONG EAST,0.1101
+town_BUKIT BATOK,-0.1066
+town_CLEMENTI,0.0975
+months_since_2017,0.0789
+town_JURONG WEST,-0.07
+town_HOUGANG,-0.0514

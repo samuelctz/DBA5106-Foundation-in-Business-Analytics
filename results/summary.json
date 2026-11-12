@@ -1,0 +1,172 @@
+{
+ "cost_matrix": {
+  "FN": 5.0,
+  "FP": 1.0
+ },
+ "splits": {
+  "train (2017-2023)": {
+   "n": 165247,
+   "pos_rate": 0.487
+  },
+  "validation (2024)": {
+   "n": 27291,
+   "pos_rate": 0.4875
+  },
+  "test (2025-2026)": {
+   "n": 46477,
+   "pos_rate": 0.4889
+  }
+ },
+ "n_features_encoded": 52,
+ "final_model": "Gradient boost (deviance)",
+ "final_model_platt_applied": false,
+ "final_params": {
+  "learning_rate": 0.15,
+  "max_leaf_nodes": 31
+ },
+ "models": [
+  {
+   "model": "LASSO (L2 loss)",
+   "type": "glassbox",
+   "training_loss": "L2",
+   "best_params": "{\"alpha\": 0.0001}",
+   "train_auc": 0.8171,
+   "valid_auc": 0.8409,
+   "test_auc": 0.8504,
+   "ece_valid_raw": 0.0453,
+   "ece_test_raw": 0.0499,
+   "ece_test_platt": 0.0168,
+   "platt_applied": true
+  },
+  {
+   "model": "LASSO logistic (deviance)",
+   "type": "glassbox",
+   "training_loss": "binomial deviance",
+   "best_params": "{\"C\": 0.3}",
+   "train_auc": 0.8199,
+   "valid_auc": 0.8443,
+   "test_auc": 0.8521,
+   "ece_valid_raw": 0.0184,
+   "ece_test_raw": 0.0269,
+   "ece_test_platt": 0.0159,
+   "platt_applied": false
+  },
+  {
+   "model": "Gradient boost (L2 loss)",
+   "type": "blackbox",
+   "training_loss": "L2",
+   "best_params": "{\"learning_rate\": 0.15, \"max_leaf_nodes\": 31}",
+   "train_auc": 0.9222,
+   "valid_auc": 0.9064,
+   "test_auc": 0.8953,
+   "ece_valid_raw": 0.0217,
+   "ece_test_raw": 0.0182,
+   "ece_test_platt": 0.0298,
+   "platt_applied": true
+  },
+  {
+   "model": "Gradient boost (deviance)",
+   "type": "blackbox",
+   "training_loss": "binomial deviance",
+   "best_params": "{\"learning_rate\": 0.15, \"max_leaf_nodes\": 31}",
+   "train_auc": 0.9213,
+   "valid_auc": 0.9069,
+   "test_auc": 0.8958,
+   "ece_valid_raw": 0.015,
+   "ece_test_raw": 0.0165,
+   "ece_test_platt": 0.0152,
+   "platt_applied": false
+  }
+ ],
+ "threshold": {
+  "chosen_threshold": 0.16,
+  "theoretical_threshold_c_fp/(c_fp+c_fn)": 0.167,
+  "valid_loss_at_chosen": 0.3472,
+  "valid_loss_at_0.5": 0.5479,
+  "test_loss_at_chosen": 0.3615,
+  "test_loss_at_0.5": 0.6003,
+  "test_loss_flag_everything": 0.5111,
+  "test_loss_flag_nothing": 2.4443,
+  "test_loss_best_glassbox_own_threshold": {
+   "model": "LASSO logistic (deviance)",
+   "threshold": 0.18,
+   "loss": 0.4068
+  },
+  "test_confusion_at_chosen": {
+   "TP": 21858,
+   "FP": 12487,
+   "FN": 863,
+   "TN": 11269
+  },
+  "test_confusion_at_0.5": {
+   "TP": 18013,
+   "FP": 4362,
+   "FN": 4708,
+   "TN": 19394
+  },
+  "test_misclassification_at_chosen": 0.2872,
+  "test_misclassification_at_0.5": 0.1952
+ },
+ "shap_global": {
+  "Sale month (time trend)": 0.2561,
+  "Flat model": 0.3361,
+  "Flat type": 0.5597,
+  "Floor area (sqm)": 0.5749,
+  "Town": 0.7298,
+  "Storey": 0.7936,
+  "Remaining lease (years)": 1.5555
+ },
+ "shap_local": {
+  "flagged": {
+   "listing": {
+    "floor_area_sqm": 113.0,
+    "remaining_lease_yrs": 93.58333333333333,
+    "storey_mid": 5.0,
+    "months_since_2017": 112.0,
+    "town": "TAMPINES",
+    "flat_type": "5 ROOM",
+    "flat_model": "Improved"
+   },
+   "month": "2026-04",
+   "resale_price": 925000.0,
+   "calibrated_p": 0.996,
+   "actual_premium": 1,
+   "shap_log_odds": {
+    "Floor area (sqm)": 0.814,
+    "Remaining lease (years)": 3.835,
+    "Storey": -0.756,
+    "Sale month (time trend)": 0.47,
+    "Town": 1.669,
+    "Flat type": -0.409,
+    "Flat model": -0.19
+   },
+   "base_value": 0.141
+  },
+  "borderline": {
+   "listing": {
+    "floor_area_sqm": 121.0,
+    "remaining_lease_yrs": 60.583333333333336,
+    "storey_mid": 5.0,
+    "months_since_2017": 111.0,
+    "town": "BISHAN",
+    "flat_type": "5 ROOM",
+    "flat_model": "Improved"
+   },
+   "month": "2026-03",
+   "resale_price": 922000.0,
+   "calibrated_p": 0.16,
+   "actual_premium": 0,
+   "shap_log_odds": {
+    "Floor area (sqm)": 0.569,
+    "Remaining lease (years)": -1.255,
+    "Storey": -0.49,
+    "Sale month (time trend)": 0.23,
+    "Town": 0.566,
+    "Flat type": -0.914,
+    "Flat model": -0.506
+   },
+   "base_value": 0.141
+  }
+ },
+ "lasso_nonzero_coefs": 48
+}
